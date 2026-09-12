@@ -1,0 +1,12 @@
+--- a/tests/CMakeLists.txt
++++ b/tests/CMakeLists.txt
+@@ -47,7 +47,8 @@
+ foreach(TESTNAME ${ALL_TEST_NAMES})
+ 
+ add_executable(${TESTNAME} ${TESTNAME}.c)
+-add_test(NAME ${TESTNAME} COMMAND ${PROJECT_SOURCE_DIR}/tests/${TESTNAME}.test)
++find_program(JSONC_TEST_SH sh PATHS "C:/Program Files/Git/bin" NO_DEFAULT_PATH REQUIRED)
++add_test(NAME ${TESTNAME} COMMAND ${JSONC_TEST_SH} ${PROJECT_SOURCE_DIR}/tests/${TESTNAME}.test)
+ 
+ # XXX using the non-target_ versions of these doesn't work :(
+ target_include_directories(

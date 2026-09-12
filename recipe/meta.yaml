@@ -8,6 +8,8 @@ package:
 source:
   url: https://s3.amazonaws.com/json-c_releases/releases/json-c-{{ version }}.tar.gz
   sha256: 876ab046479166b869afc6896d288183bbc0e5843f141200c677b3e8dfb11724
+  patches:
+    - windows-test-shell.patch  # [win]
 
 build:
   number: 1
@@ -20,6 +22,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ stdlib('c') }}
     - cmake
+    - ninja
     - make  # [unix]
 
 test:
