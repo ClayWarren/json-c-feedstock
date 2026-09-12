@@ -10,3 +10,18 @@
  
  # XXX using the non-target_ versions of these doesn't work :(
  target_include_directories(
+--- a/tests/test-defs.sh
++++ b/tests/test-defs.sh
+@@ -53,6 +53,12 @@
+ echo "=== Running test $progname"
+ 
+ CMP="${CMP-cmp}"
++# Native Windows text streams use CRLF; retain all other byte comparisons.
++jsonc_windows_cmp()
++{
++    diff --strip-trailing-cr -q "$2" "$3"
++}
++CMP=jsonc_windows_cmp
+ 
+ use_valgrind=${USE_VALGRIND-1}
+ case "${use_valgrind}" in

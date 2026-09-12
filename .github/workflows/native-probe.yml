@@ -42,3 +42,12 @@ jobs:
           name: json-c-${{ matrix.platform }}-package
           path: C:\bld\${{ matrix.platform }}\*.conda
           if-no-files-found: warn
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: failure()
+        with:
+          name: json-c-${{ matrix.platform }}-test-diagnostics
+          path: |
+            C:\bld\json-c_*\work\tests\**\*.out
+            C:\bld\json-c_*\work\tests\*.expected
+            C:\bld\json-c_*\work\Testing\Temporary\LastTest.log
+          if-no-files-found: warn
