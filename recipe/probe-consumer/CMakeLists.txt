@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.15)
+project(consumer LANGUAGES C)
+find_path(PACKAGE_INCLUDE json-c/json.h REQUIRED)
+find_library(PACKAGE_LIBRARY NAMES json-c REQUIRED)
+add_executable(consumer main.c)
+target_include_directories(consumer PRIVATE ${PACKAGE_INCLUDE})
+target_link_libraries(consumer PRIVATE ${PACKAGE_LIBRARY})

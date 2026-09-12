@@ -1,0 +1,44 @@
+name: json-c native Windows validation
+on:
+  push:
+    branches: [codex/json-c-arm64-probe]
+permissions:
+  contents: read
+jobs:
+  probe:
+    if: github.repository == 'ClayWarren/json-c-feedstock'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - config: win_arm64_
+            platform: win-arm64
+            runner: windows-11-arm
+          - config: win_64_
+            platform: win-64
+            runner: windows-2022
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Build and test
+        shell: cmd
+        env:
+          BUILD_PLATFORM: ${{ matrix.platform }}
+          CI: github_actions
+          CONDA_BLD_PATH: C:\bld
+          CONFIG: ${{ matrix.config }}
+          MINIFORGE_HOME: C:\Miniforge
+          UPLOAD_PACKAGES: 'False'
+          EXTRA_CB_OPTIONS: '--override-channels -c conda-forge'
+        run: |
+          set "flow_run_id=github_%GITHUB_RUN_ID%"
+          set "remote_url=https://github.com/%GITHUB_REPOSITORY%"
+          set "sha=%GITHUB_SHA%"
+          call ".scripts\run_win_build.bat"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: json-c-${{ matrix.platform }}-package
+          path: C:\bld\${{ matrix.platform }}\*.conda
+          if-no-files-found: warn

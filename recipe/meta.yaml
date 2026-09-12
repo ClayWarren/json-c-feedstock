@@ -23,9 +23,19 @@ requirements:
     - make  # [unix]
 
 test:
+  files:
+    - probe-consumer
   requires:
+    - cmake
+    - ninja
+    - {{ compiler("c") }}
     - pkg-config
   commands:
+    - cmake -S probe-consumer -B probe-build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="%LIBRARY_PREFIX%"  # [win]
+    - cmake --build probe-build  # [win]
+    - probe-build\consumer.exe  # [win]
+    - dumpbin /headers probe-build\consumer.exe | findstr /I /C:"AA64 machine (ARM64)"  # [win and arm64]
+    - dumpbin /headers "%LIBRARY_BIN%\json-c.dll" | findstr /I /C:"AA64 machine (ARM64)"  # [win and arm64]
     - test -f ${PREFIX}/lib/libjson-c.a  # [not win]
     - test -f ${PREFIX}/lib/libjson-c${SHLIB_EXT}  # [not win]
     - if not exist %LIBRARY_BIN%/json-c.dll exit 1  # [win]
