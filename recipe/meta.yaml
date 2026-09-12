@@ -10,6 +10,7 @@ source:
   sha256: 876ab046479166b869afc6896d288183bbc0e5843f141200c677b3e8dfb11724
   patches:
     - windows-test-shell.patch  # [win]
+    - windows-file-test.patch  # [win]
 
 build:
   number: 1
