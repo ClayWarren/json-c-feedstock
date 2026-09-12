@@ -6,5 +6,6 @@ call cmake --build . --target install --config Release
 if errorlevel 1 exit 1
 
 set "PATH=%LIBRARY_BIN%;%PATH%"
+set "VERBOSE=1"
 ctest -C Release --output-on-failure
 if errorlevel 1 exit /b 1
