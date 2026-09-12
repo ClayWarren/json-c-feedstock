@@ -49,5 +49,7 @@ jobs:
           path: |
             C:\bld\json-c_*\work\tests\**\*.out
             C:\bld\json-c_*\work\tests\*.expected
+            C:\bld\json-c_*\work\tests\test_util_file.exe
+            C:\bld\json-c_*\work\tests\json-c.dll
             C:\bld\json-c_*\work\Testing\Temporary\LastTest.log
           if-no-files-found: warn

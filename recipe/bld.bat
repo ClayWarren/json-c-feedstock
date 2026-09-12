@@ -11,4 +11,13 @@ if errorlevel 1 exit /b 1
 set "PATH=%LIBRARY_BIN%;%PATH%"
 set "VERBOSE=1"
 ctest -C Release --output-on-failure
-if errorlevel 1 exit /b 1
+if not errorlevel 1 exit /b 0
+rem Diagnose the sole remaining file-I/O test without suppressing failure.
+dumpbin /imports tests\test_util_file.exe
+dumpbin /exports tests\json-c.dll
+pushd tests\testSubDir\test_util_file.test
+powershell -NoProfile -Command "& '..\..\test_util_file.exe' '..\..'; Write-Output ('Native exit: ' + $LASTEXITCODE)"
+popd
+set "JSONC_TEST_TRACE=1"
+ctest -C Release -R test_util_file --output-on-failure
+exit /b 1
