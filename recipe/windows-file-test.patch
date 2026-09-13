@@ -107,3 +107,16 @@ From upstream json-c commit 3723b182db6f0cf62c5a041ac31f23485433ccac
  	if (d < 0)
  	{
  		fprintf(stderr, "FAIL: unable to open %s: %s\n", filename, strerror(errno));
+--- a/tests/test_util_file.c
++++ b/tests/test_util_file.c
+@@ -136,6 +136,11 @@
+ int main(int argc, char **argv)
+ {
++#ifdef _WIN32
++    /* Keep file byte counts identical to the binary test fixtures. */
++    if (_set_fmode(_O_BINARY) != 0)
++        return EXIT_FAILURE;
++#endif
+ 	//	json_object_to_file(file, obj);
+ 	//	json_object_to_file_ext(file, obj, flags);
+ 
